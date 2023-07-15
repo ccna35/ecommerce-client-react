@@ -1,47 +1,7 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
-
 import { Fragment, useState } from "react";
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
-
-// const product = {
-//   name: "Basic Tee 6-Pack ",
-//   price: "$192",
-//   rating: 3.9,
-//   reviewCount: 117,
-//   href: "#",
-//   imageSrc: "/products/photo-1542291026-7eec264c27ff.avif",
-//   imageAlt: "Two each of gray, white, and black shirts arranged on table.",
-//   colors: [
-//     { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-//     { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-//     { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-//   ],
-//   sizes: [
-//     { name: "XXS", inStock: true },
-//     { name: "XS", inStock: true },
-//     { name: "S", inStock: true },
-//     { name: "M", inStock: true },
-//     { name: "L", inStock: true },
-//     { name: "XL", inStock: true },
-//     { name: "XXL", inStock: true },
-//     { name: "XXXL", inStock: false },
-//   ],
-// };
 
 export default function ProductQuickView({
   openQuickView,

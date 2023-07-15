@@ -1,5 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardSidebar from "../components/Dashboard/Sidebar";
+import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 export default function DashboardLayout() {
@@ -70,6 +71,16 @@ export default function DashboardLayout() {
     ? "dashboard"
     : "profile";
 
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/login");
+    }
+  }, [userInfo, navigate]);
+
   return (
     <div className="container mx-auto py-8 grid grid-cols-4 gap-4 bg-bgColor">
       <div className="hidden lg:block col-span-1">
@@ -77,7 +88,7 @@ export default function DashboardLayout() {
           sidebarItems={
             pathname === "dashboard" ? adminSidebarItems : profileSidebarItems
           }
-          mainTab={"/" + pathname}
+          // mainTab={"/" + pathname}
         />
       </div>
       <main className="col-span-4 lg:col-span-3">

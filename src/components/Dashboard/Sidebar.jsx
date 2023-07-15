@@ -1,8 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-export default function DashboardSidebar({ sidebarItems, mainTab }) {
-  const [activeTab, setActiveTab] = useState(mainTab);
+export default function DashboardSidebar({ sidebarItems }) {
+  const [activeTab, setActiveTab] = useState("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setActiveTab(location.pathname);
+  }, [location]);
 
   return (
     <div className="bg-white rounded-md shadow-sm flex flex-col gap-4 p-2">

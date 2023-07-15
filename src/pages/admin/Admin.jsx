@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 const Admin = () => {
   const cards = [
     {
@@ -38,10 +42,20 @@ const Admin = () => {
     },
   ];
 
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo.isAdmin) {
+      navigate("/");
+    }
+  }, [userInfo, navigate]);
+
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
       <div className="flex gap-4 items-center mb-8">
-        <h1>Hello Mike</h1>
+        <h1>Hello {userInfo?.firstName}</h1>
         <p className="py-1 px-2 bg-chestnutRose text-white rounded-sm text-sm">
           Admin
         </p>

@@ -1,33 +1,34 @@
-import { useEffect, useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { HiArrowUpRight } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+} from "../../slices/productsApiSlice";
 
 export default function ProductList() {
-  const [products, setProducts] = useState([]);
+  const { data, isLoading, isError, error } = useGetAllProductsQuery();
+  const [deleteProduct] = useDeleteProductMutation();
 
-  useEffect(() => {
-    (async function () {
-      const res = await fetch(`https://fakestoreapi.com/products/`);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isError) console.log(error);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      //   console.log(await res.json());
-      setProducts(await res.json());
-      //   return res.json();
-    })();
-
-    // return () => {
-
-    // }
-  }, []);
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteProduct(id).unwrap();
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
-      {products.map((product) => (
+      {data.map((product) => (
         <li
-          key={product.id}
+          key={product._id}
           className="flex justify-between items-center gap-6 py-5 flex-wrap"
         >
           <div className="flex gap-x-4">
@@ -35,17 +36,17 @@ export default function ProductList() {
               <img
                 className="absolute w-full h-full object-contain"
                 src={product.image}
-                alt={product.title}
+                alt={product.name}
               />
             </div>
             <div className="min-w-0 flex-auto">
               <p className="max-w-sm truncate text-sm font-semibold leading-6 text-gray-900">
-                {product.title}
+                {product.name}
               </p>
             </div>
           </div>
           <div className="flex gap-4 flex-wrap">
-            <Link to={`/dashboard/products/${product.id}/edit`}>
+            <Link to={`/dashboard/products/${product._id}/edit`}>
               <button className="px-2 py-1 rounded-sm bg-green-700 text-white">
                 <AiFillEdit />
               </button>
@@ -53,7 +54,10 @@ export default function ProductList() {
             <button className="px-2 py-1 rounded-sm bg-blue-700 text-white">
               <HiArrowUpRight />
             </button>
-            <button className="px-2 py-1 rounded-sm bg-red-700 text-white">
+            <button
+              className="px-2 py-1 rounded-sm bg-red-700 text-white"
+              onClick={() => handleDelete(product._id)}
+            >
               <AiFillDelete />
             </button>
           </div>

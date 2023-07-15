@@ -6,7 +6,9 @@ import { LogInIcon, User } from "lucide-react";
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { BiLeftArrowCircle } from "react-icons/bi";
 import { BsArrowLeft } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../slices/authSlice";
 
 export default function UserMenu() {
   const menuItems = [
@@ -22,13 +24,21 @@ export default function UserMenu() {
       icon: <LogInIcon />,
       href: "/login",
     },
-    {
-      id: 3,
-      text: "Sign out",
-      icon: <BsArrowLeft />,
-      href: "/logout",
-    },
   ];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = () => {
+    try {
+      dispatch(logout());
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -48,26 +58,50 @@ export default function UserMenu() {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="px-1 py-1 ">
-            {menuItems.map((item) => {
-              return (
-                <Link to={item.href} key={item.id}>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`${
-                          active
-                            ? "bg-chestnutRose text-white"
-                            : "text-gray-900"
-                        } group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2`}
-                      >
-                        {item.icon}
-                        <span>{item.text}</span>
-                      </button>
-                    )}
-                  </Menu.Item>
-                </Link>
-              );
-            })}
+            <Link to="/profile">
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active ? "bg-chestnutRose text-white" : "text-gray-900"
+                    } group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2`}
+                  >
+                    <FaUser />
+                    <span>Profile</span>
+                  </button>
+                )}
+              </Menu.Item>
+            </Link>
+            {userInfo ? (
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={`${
+                      active ? "bg-chestnutRose text-white" : "text-gray-900"
+                    } group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2`}
+                    onClick={logoutHandler}
+                  >
+                    <BsArrowLeft />
+                    <span>Sign out</span>
+                  </button>
+                )}
+              </Menu.Item>
+            ) : (
+              <Link to="/login">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "bg-chestnutRose text-white" : "text-gray-900"
+                      } group flex w-full items-center rounded-md px-2 py-2 text-sm gap-2`}
+                    >
+                      <LogInIcon />
+                      <span>Log in</span>
+                    </button>
+                  )}
+                </Menu.Item>
+              </Link>
+            )}
           </div>
         </Menu.Items>
       </Transition>

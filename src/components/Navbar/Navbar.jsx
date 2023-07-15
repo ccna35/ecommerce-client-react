@@ -1,12 +1,12 @@
-import { User, Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
-import LoginModal from "../Modals/LoginModal";
 import ShoppingCart from "../ShoppingCart";
 import { MdSpaceDashboard } from "react-icons/md";
 import UserMenu from "./UserMenu";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const dropdownItems = [
   {
@@ -44,16 +44,12 @@ const dropdownItems = [
 ];
 
 const Navbar = () => {
-  const [openLoginModal, setOpenLoginModal] = useState();
-
   const [openShoppingCart, setOpenShoppingCart] = useState(false);
+
+  const { userInfo } = useSelector((state) => state.auth);
 
   return (
     <nav className="bg-white py-4 border-b relative z-10">
-      <LoginModal
-        openLoginModal={openLoginModal}
-        setOpenLoginModal={setOpenLoginModal}
-      />
       <div className="container mx-auto flex justify-between items-center">
         <div className="logo">
           <Link to="/">
@@ -111,24 +107,15 @@ const Navbar = () => {
           </Menu>
         </div>
         <div className="menu flex gap-4">
-          <Link
-            to="/dashboard"
-            className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
-          >
-            <MdSpaceDashboard size={24} />
-          </Link>
-          {/* <div
-            className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
-            onClick={() => setOpenLoginModal("form-elements")}
-          >
-            <User size={24} />
-          </div> */}
-          {/* <Link
-            href="/login"
-            className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor"
-          >
-            <User size={24} />
-          </Link> */}
+          {userInfo.isAdmin && (
+            <Link
+              to="/dashboard"
+              className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
+            >
+              <MdSpaceDashboard size={24} />
+            </Link>
+          )}
+
           <UserMenu />
           <div className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer">
             <ShoppingBag size={24} onClick={() => setOpenShoppingCart(true)} />

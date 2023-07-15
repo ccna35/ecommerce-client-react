@@ -1,5 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../slices/usersApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../slices/authSlice";
 
 export default function RegisterPage() {
   const [firstName, setFirstName] = useState("");
@@ -10,33 +13,51 @@ export default function RegisterPage() {
   const [city, setCity] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
 
-  const handleSubmit = async () => {
-    console.log(firstName, lastName, email, city, streetAddress);
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [register, { isLoading, isError, error }] = useRegisterMutation();
+
+  const handleRegister = async () => {
     if (password !== confirmPassword) console.log("Passwords don't match!");
-    try {
-      const res = await fetch("http://localhost:5000/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          password,
-          email,
-          city,
-          streetAddress,
-        }),
-      });
 
-      const data = await res.json();
+    if (email && password) {
+      const body = {
+        firstName,
+        lastName,
+        password,
+        email,
+        city,
+        street: streetAddress,
+      };
 
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+      const res = await register(body).unwrap();
+      dispatch(setCredentials({ ...res }));
+      console.log(res);
+      if (res.isAdmin) {
+        console.log(res.isAdmin);
+        navigate("/dashboard");
+      } else {
+        console.log(res.isAdmin);
+        navigate("/profile");
+      }
+    } else {
+      console.log("The two fields are required!");
     }
   };
+
+  if (isError) {
+    console.log(error);
+  }
+
+  useEffect(() => {
+    if (userInfo) {
+      if (userInfo.isAdmin) navigate("/dashboard");
+      if (!userInfo.isAdmin) navigate("/profile");
+    }
+  }, [navigate, userInfo]);
 
   return (
     <main className="bg-bgColor">
@@ -72,7 +93,7 @@ export default function RegisterPage() {
                       autoComplete="given-name"
                       required
                       onChange={(e) => setFirstName(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -92,7 +113,7 @@ export default function RegisterPage() {
                       autoComplete="family-name"
                       required
                       onChange={(e) => setLastName(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -112,7 +133,7 @@ export default function RegisterPage() {
                       autoComplete="email"
                       required
                       onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -131,7 +152,7 @@ export default function RegisterPage() {
                     autoComplete="password"
                     required
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -149,7 +170,7 @@ export default function RegisterPage() {
                     required
                     autoComplete="password"
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
@@ -168,7 +189,7 @@ export default function RegisterPage() {
                       autoComplete="street-address"
                       required
                       onChange={(e) => setStreetAddress(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -188,7 +209,7 @@ export default function RegisterPage() {
                       required
                       autoComplete="city"
                       onChange={(e) => setCity(e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -206,7 +227,7 @@ export default function RegisterPage() {
                     name="region"
                     id="region"
                     autoComplete="address-level1"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -224,7 +245,7 @@ export default function RegisterPage() {
                     name="postal-code"
                     id="postal-code"
                     autoComplete="postal-code"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div> */}
@@ -235,10 +256,15 @@ export default function RegisterPage() {
           <button
             type="button"
             className="rounded-md bg-chestnutRose px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-            onClick={handleSubmit}
+            onClick={handleRegister}
           >
-            Register
+            {isLoading ? "Loading..." : "Register"}
           </button>
+          {isError && (
+            <p className="mt-4 p-2 rounded-sm border border-red-200 bg-red-100 text-red-800">
+              {error.data.message}
+            </p>
+          )}
           <div className="flex gap-2 mt-8">
             <p>Already registered? </p>
             <Link to="/login" className="text-chestnutRose">
