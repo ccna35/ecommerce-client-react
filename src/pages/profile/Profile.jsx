@@ -7,11 +7,11 @@ import { setCredentials } from "../../slices/authSlice";
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [firstName, setFirstName] = useState(userInfo.firstName);
-  const [lastName, setLastName] = useState(userInfo.lastName);
-  const [email, setEmail] = useState(userInfo.email);
-  const [city, setCity] = useState(userInfo.city);
-  const [street, setStreet] = useState(userInfo.street);
+  const [firstName, setFirstName] = useState(userInfo?.firstName);
+  const [lastName, setLastName] = useState(userInfo?.lastName);
+  const [email, setEmail] = useState(userInfo?.email);
+  const [city, setCity] = useState(userInfo?.city);
+  const [street, setStreet] = useState(userInfo?.street);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const Profile = () => {
 
   const handleSubmit = async () => {
     const body = {
-      id: userInfo.id,
+      id: userInfo?.id,
       updatedData: {
         firstName,
         lastName,
@@ -49,10 +49,10 @@ const Profile = () => {
           <h1>Hello {userInfo?.firstName}</h1>
           <p
             className={`${
-              userInfo.isAdmin ? "bg-chestnutRose" : "bg-blue-500"
+              userInfo?.isAdmin ? "bg-chestnutRose" : "bg-blue-500"
             } py-1 px-2 text-white rounded-sm text-sm`}
           >
-            {userInfo.isAdmin ? "Admin" : "Member"}
+            {userInfo?.isAdmin ? "Admin" : "Member"}
           </p>
         </div>
         {/* <BackButton /> */}

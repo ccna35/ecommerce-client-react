@@ -48,8 +48,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (userInfo) {
-      if (userInfo.isAdmin) navigate("/dashboard");
-      if (!userInfo.isAdmin) navigate("/profile");
+      if (userInfo?.isAdmin) navigate("/dashboard");
+      if (!userInfo?.isAdmin) navigate("/profile");
     }
   }, [navigate, userInfo]);
 

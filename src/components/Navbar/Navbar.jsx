@@ -107,7 +107,7 @@ const Navbar = () => {
           </Menu>
         </div>
         <div className="menu flex gap-4">
-          {userInfo.isAdmin && (
+          {userInfo?.isAdmin && (
             <Link
               to="/dashboard"
               className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"

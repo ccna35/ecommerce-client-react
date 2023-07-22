@@ -47,7 +47,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!userInfo.isAdmin) {
+    if (!userInfo?.isAdmin) {
       navigate("/");
     }
   }, [userInfo, navigate]);

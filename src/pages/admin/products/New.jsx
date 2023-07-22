@@ -60,7 +60,7 @@ const NewProductPage = () => {
           category,
           quantity,
           image,
-          user: userInfo.id,
+          user: userInfo?.id,
         }).unwrap();
         console.log(res);
 
