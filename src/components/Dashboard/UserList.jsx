@@ -39,13 +39,13 @@ export default function UserList() {
             </div>
           </div>
           <div className="flex gap-4 flex-wrap">
-            <button className="px-2 py-1 rounded-sm bg-green-700 text-white">
+            <button className="btn-edit">
               <AiFillEdit />
             </button>
-            <button className="px-2 py-1 rounded-sm bg-blue-700 text-white">
+            <button className="btn-view">
               <HiArrowUpRight />
             </button>
-            <button className="px-2 py-1 rounded-sm bg-red-700 text-white">
+            <button className="btn-delete">
               <AiFillDelete />
             </button>
           </div>

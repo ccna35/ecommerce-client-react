@@ -1,35 +1,95 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../../components/common/BackButton";
 import { PhotoIcon } from "@heroicons/react/20/solid";
+import {
+  useGetProductDetailsQuery,
+  useUpdateProductDetailsMutation,
+} from "../../../slices/productsApiSlice";
+import { useGetAllCategoriesQuery } from "../../../slices/categoriesApiSlice";
+import { useGetAllBrandsQuery } from "../../../slices/brandsApiSlice";
 
 const EditProductPage = () => {
-  const [productDetails, setProductDetails] = useState({});
+  const [productName, setProductName] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [image, setImage] = useState(null);
+
+  const { data: categories, isLoading: areCategoriesLoading } =
+    useGetAllCategoriesQuery();
+  const { data: brands, isLoading: areBrandsLoading } = useGetAllBrandsQuery();
 
   const params = useParams();
 
-  useEffect(() => {
-    (async function getCategoryProducts() {
-      const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
+  const {
+    data: productDetails,
+    isLoading: areProductDetailsLoading,
+    isError,
+    error,
+    isSuccess,
+  } = useGetProductDetailsQuery(params.id);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      //   console.log(await res.json());
-      setProductDetails(await res.json());
-      //   return res.json();
-    })();
+  const [updateProductDetails, { isLoading }] =
+    useUpdateProductDetailsMutation();
 
-    // return () => {
+  const navigate = useNavigate();
 
-    // }
-  }, [params]);
+  //handle and convert it in base 64
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
+    console.log(file);
+  };
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+      console.log(reader.result);
+    };
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updatedData = {
+      name: productName || productDetails.name,
+      description: productDescription || productDetails.description,
+      price: price || productDetails.price,
+      brand: brand || productDetails.brand,
+      category: category || productDetails.category,
+      quantity: quantity || productDetails.quantity,
+      image,
+    };
+
+    console.log(updatedData);
+
+    try {
+      const res = await updateProductDetails({
+        updatedData,
+        id: params.id,
+      }).unwrap();
+      console.log(res);
+
+      navigate("/dashboard/products");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (areProductDetailsLoading || areBrandsLoading || areCategoriesLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
-      <form className="">
-        <div className="">
-          <div className="">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div>
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-6">
                 <div className="mt-2 flex justify-between items-center">
@@ -46,14 +106,18 @@ const EditProductPage = () => {
                       id="product-name"
                       placeholder="Product name"
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
-                      defaultValue={productDetails.title}
+                      defaultValue={productDetails.name}
+                      onChange={(e) => {
+                        setProductName(e.target.value);
+                        console.log(e.target.value);
+                      }}
                     />
                   </div>
                   <BackButton />
                 </div>
               </div>
 
-              <div className="col-span-6">
+              <div className="sm:col-span-6">
                 <div className="mt-2">
                   <label
                     htmlFor="description"
@@ -64,8 +128,9 @@ const EditProductPage = () => {
                   <textarea
                     name="description"
                     id="description"
-                    placeholder="description"
+                    placeholder="Description"
                     defaultValue={productDetails.description}
+                    onChange={(e) => setProductDescription(e.target.value)}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -84,7 +149,9 @@ const EditProductPage = () => {
                     name="quantity"
                     type="number"
                     placeholder="Quantity"
-                    defaultValue={43}
+                    min={0}
+                    defaultValue={productDetails.quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -104,6 +171,7 @@ const EditProductPage = () => {
                     type="number"
                     placeholder="Price"
                     defaultValue={productDetails.price}
+                    onChange={(e) => setPrice(e.target.value)}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -121,13 +189,17 @@ const EditProductPage = () => {
                   name="products"
                   id="products"
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
+                  defaultValue={productDetails.brand}
+                  onChange={(e) => setBrand(e.target.value)}
                 >
-                  <option value="Nike" selected>
-                    Nike
-                  </option>
-                  <option value="Adidas">Adidas</option>
-                  <option value="Apple">Apple</option>
-                  <option value="Samsung">Samsung</option>
+                  <option value="">Please choose a brand</option>
+                  {brands?.map((brand) => {
+                    return (
+                      <option value={brand.name} key={brand._id}>
+                        {brand.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="sm:col-span-3">
@@ -142,20 +214,24 @@ const EditProductPage = () => {
                   name="categories"
                   id="categories"
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
+                  defaultValue={productDetails.category}
+                  onChange={(e) => setCategory(e.target.value)}
                 >
-                  <option value="Menswear">Menswear</option>
-                  <option value="Shoes" selected>
-                    Shoes
-                  </option>
-                  <option value="Laptops">Laptops</option>
-                  <option value="Kitchen">Kitchen</option>
+                  <option value="">Please choose a category</option>
+                  {categories?.map((category) => {
+                    return (
+                      <option value={category.name} key={category._id}>
+                        {category.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="sm:col-span-3">
                 <div className="relative w-full h-40">
                   <img
-                    src={productDetails.image}
-                    alt={productDetails.title}
+                    src={image || productDetails.image}
+                    alt={productDetails.name}
                     className="absolute w-full h-full object-contain"
                   />
                 </div>
@@ -178,6 +254,7 @@ const EditProductPage = () => {
                           name="file-upload"
                           type="file"
                           className="sr-only"
+                          onChange={handleImage}
                         />
                       </label>
                       <p className="pl-1">or drag and drop</p>

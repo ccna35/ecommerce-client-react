@@ -49,13 +49,13 @@ export default function ProductQuickView({
                     <div className="relative h-80 w-full md:h-full overflow-hidden rounded-lg bg-gray-100 sm:col-span-6 ">
                       <img
                         src={product.image}
-                        alt={product.title}
+                        alt={product.name}
                         className="w-full h-full object-contain object-center"
                       />
                     </div>
                     <div className="sm:col-span-6">
                       <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-                        {product.title}
+                        {product.name}
                       </h2>
 
                       <section
@@ -74,14 +74,12 @@ export default function ProductQuickView({
                         <div className="mt-6">
                           <h4 className="sr-only">Reviews</h4>
                           <div className="flex items-center">
-                            <p className="">
-                              {product.rating.rate} out of 5 stars
-                            </p>
+                            <p className="">{product.rating} out of 5 stars</p>
                             <a
                               href="#"
                               className="ml-3 text-sm font-medium text-chestnutRose"
                             >
-                              {product.rating.count} reviews
+                              {product.rating} reviews
                             </a>
                           </div>
                         </div>

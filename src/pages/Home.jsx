@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { IoIosFlash } from "react-icons/io";
 import { BiCategory } from "react-icons/bi";
 import CategoryCard from "../components/Category/CategoryCard";
@@ -7,38 +6,32 @@ import Feature from "../components/Features/Feature";
 import { Link } from "react-router-dom";
 import DefaultCarousel from "../components/Carousel";
 import ProductCard from "../components/ProductCard";
+import { useGetAllProductsQuery } from "../slices/productsApiSlice";
+import { useGetAllCategoriesQuery } from "../slices/categoriesApiSlice";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const {
+    data: products,
+    // isLoading: areProductsLoading,
+    isError: isProductsError,
+    error: productsError,
+    isSuccess: isProductsSuccess,
+  } = useGetAllProductsQuery();
+  const {
+    data: categories,
+    // isLoading: areCategoriesLoading,
+    isError: isCategoriesError,
+    error: categoriesError,
+  } = useGetAllCategoriesQuery();
 
-  useEffect(() => {
-    (async function () {
-      const res = await fetch(`https://fakestoreapi.com/products/`);
+  if (isCategoriesError) {
+    console.log(categoriesError);
+  }
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      //   console.log(await res.json());
-      setProducts(await res.json());
-      //   return res.json();
-    })();
+  if (isProductsError) {
+    console.log(productsError);
+  }
 
-    (async function () {
-      const res = await fetch(`https://fakestoreapi.com/products/categories`);
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      //   console.log(await res.json());
-      setCategories(await res.json());
-      //   return res.json();
-    })();
-
-    // return () => {
-
-    // }
-  }, []);
   return (
     <main className="bg-bgColor">
       <section className="bg-white">
@@ -56,7 +49,7 @@ const Home = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products?.map((product) => {
-              return <ProductCard product={product} key={product.id} />;
+              return <ProductCard product={product} key={product._id} />;
             })}
           </div>
         </div>
@@ -70,9 +63,9 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {categories.map((category) => {
+            {categories?.map((category) => {
               return (
-                <Link to={"/category/" + category} key={category}>
+                <Link to={"/category/" + category.name} key={category._id}>
                   <CategoryCard category={category} />
                 </Link>
               );

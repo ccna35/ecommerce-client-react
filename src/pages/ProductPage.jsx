@@ -1,32 +1,24 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NewReview from "../components/ProductPage/NewReview";
 import Review from "../components/ProductPage/Review";
 import Spinner from "../components/common/Spinner";
+import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 
 const ProductPage = () => {
-  const [productDetails, setProductDetails] = useState({});
-
   const params = useParams();
 
-  useEffect(() => {
-    (async function getCategoryProducts() {
-      const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
+  const { data, isLoading, isError, error, isSuccess } =
+    useGetProductDetailsQuery(params.id);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      //   console.log(await res.json());
-      setProductDetails(await res.json());
-      //   return res.json();
-    })();
+  if (isError) {
+    console.log(error);
+  }
 
-    // return () => {
+  if (isSuccess) {
+    console.log(data);
+  }
 
-    // }
-  }, [params]);
-
-  if (Object.keys(productDetails).length === 0) {
+  if (isLoading) {
     return <Spinner />;
   }
 
@@ -36,22 +28,24 @@ const ProductPage = () => {
         {/* <ProductGallery productImages={productImages} /> */}
         <div className="relative h-[20rem]">
           <img
-            src={productDetails.image}
-            alt={productDetails.title}
+            src={data.image}
+            alt={data.name}
             className="absolute w-full h-full object-contain"
           />
         </div>
         <div className="text-mainColor flex flex-col items-start gap-8">
-          <h2 className="text-3xl font-bold">{productDetails.title}</h2>
+          <h2 className="text-3xl font-bold">{data.name}</h2>
           <p>
-            Brand: <b>Nike</b>
+            Brand: <b>{data.brand}</b>
           </p>
-          <p>{productDetails.description}</p>
+          <p>{data.description}</p>
           <div>
             <p className="text-chestnutRose text-2xl font-bold">
-              ${productDetails.price}
+              ${data.price}
             </p>
-            <p className="text-green-600">In stock</p>
+            <p className="text-green-600">
+              <span>{data.quantity}</span> left In stock
+            </p>
           </div>
           <button className="py-2 px-4 bg-chestnutRose text-white rounded-sm hover:bg-red-600 transition-colors duration-300">
             Add to cart

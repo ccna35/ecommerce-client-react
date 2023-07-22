@@ -5,6 +5,7 @@ import { useGetAllBrandsQuery } from "../../../slices/brandsApiSlice";
 import { useState } from "react";
 import { useAddProductMutation } from "../../../slices/productsApiSlice";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const NewProductPage = () => {
   const [productName, setProductName] = useState("");
@@ -34,10 +35,11 @@ const NewProductPage = () => {
     };
   };
 
-  const [addProduct, { data, isLoading, isError, error, isSuccess }] =
-    useAddProductMutation();
+  const [addProduct, { isLoading }] = useAddProductMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,8 +62,9 @@ const NewProductPage = () => {
           image,
           user: userInfo.id,
         }).unwrap();
-
         console.log(res);
+
+        navigate("/dashboard/products");
       } catch (error) {
         console.log(error);
       }
@@ -72,9 +75,9 @@ const NewProductPage = () => {
 
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
-      <form className="" onSubmit={handleSubmit}>
-        <div className="">
-          <div className="">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div>
             <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-6">
                 <div className="mt-2 flex justify-between items-center">
@@ -212,9 +215,10 @@ const NewProductPage = () => {
 
         <button
           type="submit"
+          disabled={isLoading}
           className="mt-8 rounded-md bg-chestnutRose px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
         >
-          Add Product
+          {isLoading ? "Adding product..." : "Add Product"}
         </button>
       </form>
     </div>

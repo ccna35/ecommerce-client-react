@@ -34,7 +34,7 @@ export default function ProductList() {
           <div className="flex gap-x-4">
             <div className="relative h-12 w-12 rounded-full overflow-hidden">
               <img
-                className="absolute w-full h-full object-contain"
+                className="absolute w-full h-full object-cover"
                 src={product.image}
                 alt={product.name}
               />
@@ -47,15 +47,15 @@ export default function ProductList() {
           </div>
           <div className="flex gap-4 flex-wrap">
             <Link to={`/dashboard/products/${product._id}/edit`}>
-              <button className="px-2 py-1 rounded-sm bg-green-700 text-white">
+              <button className="btn-edit">
                 <AiFillEdit />
               </button>
             </Link>
-            <button className="px-2 py-1 rounded-sm bg-blue-700 text-white">
+            <button className="btn-view">
               <HiArrowUpRight />
             </button>
             <button
-              className="px-2 py-1 rounded-sm bg-red-700 text-white"
+              className="btn-delete"
               onClick={() => handleDelete(product._id)}
             >
               <AiFillDelete />
