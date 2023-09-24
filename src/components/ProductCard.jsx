@@ -2,9 +2,25 @@ import { useState } from "react";
 import { AiFillPlusSquare, AiFillStar } from "react-icons/ai";
 import ProductQuickView from "./ProductPage/ProductQuickView";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItem } from "../slices/cartSlice";
 
 const ProductCard = ({ product }) => {
   const [openQuickView, setOpenQuickView] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    const data = {
+      productId: product._id,
+      image: product.image,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    };
+
+    dispatch(addItem(data));
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm relative transition-shadow duration-300 hover:shadow-lg overflow-hidden">
@@ -44,7 +60,11 @@ const ProductCard = ({ product }) => {
               </span>
             </div>
           </div>
-          <AiFillPlusSquare className="text-chestnutRose" size={30} />
+          <AiFillPlusSquare
+            className="text-chestnutRose cursor-pointer"
+            size={30}
+            onClick={handleAddToCart}
+          />
         </div>
       </div>
     </div>

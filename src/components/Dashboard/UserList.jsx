@@ -1,12 +1,17 @@
 import { useMemo } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { HiArrowUpRight } from "react-icons/hi2";
-import { useGetAllUsersQuery } from "../../slices/usersApiSlice";
+import { useGetAllUsersQuery } from "../../slices/ApiSlices/usersApiSlice";
 
 export default function UserList() {
   const { data, isLoading, isError, error, isSuccess } = useGetAllUsersQuery();
 
-  const users = useMemo(() => data?.filter((user) => !user.isAdmin), [data]);
+  console.log(data);
+
+  const users = useMemo(
+    () => data?.data?.filter((user) => !user.isAdmin),
+    [data]
+  );
 
   if (isSuccess) console.log(data);
   if (isError) console.log(error);

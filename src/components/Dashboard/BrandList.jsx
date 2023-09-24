@@ -1,4 +1,4 @@
-import { useGetAllBrandsQuery } from "../../slices/brandsApiSlice";
+import { useGetAllBrandsQuery } from "../../slices/ApiSlices/brandsApiSlice";
 
 export default function BrandList() {
   const { data, isLoading, isError, error } = useGetAllBrandsQuery();
@@ -12,7 +12,7 @@ export default function BrandList() {
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
-      {data.map((brand) => (
+      {data.data.map((brand) => (
         <li
           key={brand._id}
           className="flex justify-between items-center gap-6 py-5 flex-wrap"

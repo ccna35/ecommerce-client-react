@@ -1,7 +1,9 @@
-import { useGetAllCategoriesQuery } from "../../slices/categoriesApiSlice";
+import { useGetAllCategoriesQuery } from "../../slices/ApiSlices/categoriesApiSlice";
 
 export default function CategoryList() {
   const { data, isLoading, isError, error } = useGetAllCategoriesQuery();
+
+  console.log(data);
 
   if (isError) {
     console.log(error);
@@ -12,7 +14,7 @@ export default function CategoryList() {
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
-      {data.map((category) => (
+      {data.data.map((category) => (
         <li
           key={category._id}
           className="flex justify-between items-center gap-6 py-5 flex-wrap"

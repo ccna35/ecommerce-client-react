@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-const PRODUCTS_URL = "/products";
+const PRODUCTS_URL = "/product";
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -26,7 +26,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
     }),
 
     getProductsByCategory: builder.query({
-      query: (id) => PRODUCTS_URL + "/category/" + id,
+      query: (id) => PRODUCTS_URL + "/search/category/" + id,
       providesTags: ["Product"],
     }),
 

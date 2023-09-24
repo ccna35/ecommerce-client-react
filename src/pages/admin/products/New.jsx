@@ -1,9 +1,9 @@
 import { PhotoIcon } from "@heroicons/react/20/solid";
 import BackButton from "../../../components/common/BackButton";
-import { useGetAllCategoriesQuery } from "../../../slices/categoriesApiSlice";
-import { useGetAllBrandsQuery } from "../../../slices/brandsApiSlice";
+import { useGetAllCategoriesQuery } from "../../../slices/ApiSlices/categoriesApiSlice";
+import { useGetAllBrandsQuery } from "../../../slices/ApiSlices/brandsApiSlice";
 import { useState } from "react";
-import { useAddProductMutation } from "../../../slices/productsApiSlice";
+import { useAddProductMutation } from "../../../slices/ApiSlices/productsApiSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +31,7 @@ const NewProductPage = () => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImage(reader.result);
-      console.log(reader.result);
+      console.log(typeof reader.result);
     };
   };
 
@@ -147,7 +147,7 @@ const NewProductPage = () => {
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   <option value="">Please choose a brand</option>
-                  {brands?.map((brand) => {
+                  {brands?.data?.map((brand) => {
                     return (
                       <option value={brand.name} key={brand._id}>
                         {brand.name}
@@ -167,7 +167,7 @@ const NewProductPage = () => {
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
                 >
                   <option value="">Please choose a category</option>
-                  {categories?.map((category) => {
+                  {categories?.data?.map((category) => {
                     return (
                       <option value={category.name} key={category._id}>
                         {category.name}

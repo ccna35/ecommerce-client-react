@@ -22,6 +22,7 @@ import ReviewsPage from "./pages/admin/reviews/Reviews";
 import SellersPage from "./pages/admin/sellers/Sellers";
 import UserOrdersPage from "./pages/profile/orders/Orders";
 import WishlistPage from "./pages/profile/wishlist/Wishlist";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

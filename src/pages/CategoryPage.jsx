@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import CategorySidebar from "../components/Category/Sidebar";
-import { useGetProductsByCategoryQuery } from "../slices/productsApiSlice";
+import { useGetProductsByCategoryQuery } from "../slices/ApiSlices/productsApiSlice";
 
 const CategoryPage = () => {
   const params = useParams();

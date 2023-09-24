@@ -2,10 +2,20 @@ import { useParams } from "react-router-dom";
 import NewReview from "../components/ProductPage/NewReview";
 import Review from "../components/ProductPage/Review";
 import Spinner from "../components/common/Spinner";
-import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
+import { useGetProductDetailsQuery } from "../slices/ApiSlices/productsApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../slices/cartSlice";
 
 const ProductPage = () => {
+  const dispatch = useDispatch();
+
   const params = useParams();
+
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const DoesThisItemExistsInCart = cartItems?.find(
+    (item) => item.productId === params.id
+  );
 
   const { data, isLoading, isError, error, isSuccess } =
     useGetProductDetailsQuery(params.id);
@@ -21,6 +31,18 @@ const ProductPage = () => {
   if (isLoading) {
     return <Spinner />;
   }
+
+  const handleAddToCart = () => {
+    const itemDetails = {
+      productId: data._id,
+      image: data.image,
+      name: data.name,
+      price: data.price,
+      quantity: 1,
+    };
+
+    dispatch(addItem(itemDetails));
+  };
 
   return (
     <div className="container mx-auto grid place-items-center py-16">
@@ -47,12 +69,17 @@ const ProductPage = () => {
               <span>{data.quantity}</span> left In stock
             </p>
           </div>
-          <button className="py-2 px-4 bg-chestnutRose text-white rounded-sm hover:bg-red-600 transition-colors duration-300">
-            Add to cart
+          <button
+            className={`py-2 px-4 text-white rounded-sm transition-colors duration-300 ${
+              DoesThisItemExistsInCart
+                ? "bg-gray-400 hover:bg-gray-600"
+                : "bg-chestnutRose hover:bg-red-600"
+            }`}
+            onClick={handleAddToCart}
+            disabled={DoesThisItemExistsInCart}
+          >
+            {DoesThisItemExistsInCart ? "Added to cart" : "Add to cart"}
           </button>
-          <p>
-            Sold by: <b>Shoes Store</b>
-          </p>
         </div>
       </div>
       <div className="my-8 w-full flex flex-col gap-4">

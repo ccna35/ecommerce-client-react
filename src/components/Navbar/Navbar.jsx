@@ -47,6 +47,7 @@ const Navbar = () => {
   const [openShoppingCart, setOpenShoppingCart] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
 
   return (
     <nav className="bg-white py-4 border-b relative z-10">
@@ -117,8 +118,14 @@ const Navbar = () => {
           )}
 
           <UserMenu />
-          <div className="w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer">
-            <ShoppingBag size={24} onClick={() => setOpenShoppingCart(true)} />
+          <div
+            className="relative w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
+            onClick={() => setOpenShoppingCart(true)}
+          >
+            <span className="absolute w-5 h-5 text-xs right-0 -top-2 outline outline-2 outline-white text-center leading-5 rounded-full bg-chestnutRose text-white">
+              {cartItems?.length}
+            </span>
+            <ShoppingBag size={24} />
             <ShoppingCart
               openShoppingCart={openShoppingCart}
               setOpenShoppingCart={setOpenShoppingCart}

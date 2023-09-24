@@ -1,11 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUpdateUserMutation } from "../../slices/usersApiSlice";
+import { useUpdateUserMutation } from "../../slices/ApiSlices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
 
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
+
+  console.log(userInfo);
 
   const [firstName, setFirstName] = useState(userInfo?.firstName);
   const [lastName, setLastName] = useState(userInfo?.lastName);

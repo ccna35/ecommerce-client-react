@@ -6,8 +6,8 @@ import Feature from "../components/Features/Feature";
 import { Link } from "react-router-dom";
 import DefaultCarousel from "../components/Carousel";
 import ProductCard from "../components/ProductCard";
-import { useGetAllProductsQuery } from "../slices/productsApiSlice";
-import { useGetAllCategoriesQuery } from "../slices/categoriesApiSlice";
+import { useGetAllProductsQuery } from "../slices/ApiSlices/productsApiSlice";
+import { useGetAllCategoriesQuery } from "../slices/ApiSlices/categoriesApiSlice";
 
 const Home = () => {
   const {
@@ -48,7 +48,7 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products?.map((product) => {
+            {products?.data?.map((product) => {
               return <ProductCard product={product} key={product._id} />;
             })}
           </div>
@@ -63,7 +63,7 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {categories?.map((category) => {
+            {categories?.data?.map((category) => {
               return (
                 <Link to={"/category/" + category.name} key={category._id}>
                   <CategoryCard category={category} />
@@ -82,18 +82,14 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
-            <CategorySmallCard />
+            {categories?.data?.map((category) => {
+              return (
+                <Link to={"/category/" + category.name} key={category._id}>
+                  {/* <CategoryCard category={category} /> */}
+                  <CategorySmallCard category={category} />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

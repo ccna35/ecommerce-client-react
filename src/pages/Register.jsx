@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../slices/usersApiSlice";
+import { useRegisterMutation } from "../slices/ApiSlices/usersApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
 
@@ -34,7 +34,7 @@ export default function RegisterPage() {
       };
 
       const res = await register(body).unwrap();
-      dispatch(setCredentials({ ...res }));
+      dispatch(setCredentials({ ...res.user }));
       console.log(res);
       if (res.isAdmin) {
         console.log(res.isAdmin);

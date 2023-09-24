@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
-} from "../../slices/productsApiSlice";
+} from "../../slices/ApiSlices/productsApiSlice";
 
 export default function ProductList() {
   const { data, isLoading, isError, error } = useGetAllProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
+
+  console.log(data);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -26,7 +28,7 @@ export default function ProductList() {
 
   return (
     <ul role="list" className="divide-y divide-gray-100">
-      {data.map((product) => (
+      {data?.data?.map((product) => (
         <li
           key={product._id}
           className="flex justify-between items-center gap-6 py-5 flex-wrap"

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BackButton from "../../../components/common/BackButton";
 import { PhotoIcon } from "@heroicons/react/20/solid";
 import {
   useGetProductDetailsQuery,
   useUpdateProductDetailsMutation,
-} from "../../../slices/productsApiSlice";
-import { useGetAllCategoriesQuery } from "../../../slices/categoriesApiSlice";
-import { useGetAllBrandsQuery } from "../../../slices/brandsApiSlice";
+} from "../../../slices/ApiSlices/productsApiSlice";
+import { useGetAllCategoriesQuery } from "../../../slices/ApiSlices/categoriesApiSlice";
+import { useGetAllBrandsQuery } from "../../../slices/ApiSlices/brandsApiSlice";
 
 const EditProductPage = () => {
   const [productName, setProductName] = useState("");
@@ -20,7 +20,10 @@ const EditProductPage = () => {
 
   const { data: categories, isLoading: areCategoriesLoading } =
     useGetAllCategoriesQuery();
+
   const { data: brands, isLoading: areBrandsLoading } = useGetAllBrandsQuery();
+
+  console.log(brands);
 
   const params = useParams();
 
@@ -193,7 +196,7 @@ const EditProductPage = () => {
                   onChange={(e) => setBrand(e.target.value)}
                 >
                   <option value="">Please choose a brand</option>
-                  {brands?.map((brand) => {
+                  {brands?.data?.map((brand) => {
                     return (
                       <option value={brand.name} key={brand._id}>
                         {brand.name}
@@ -218,7 +221,7 @@ const EditProductPage = () => {
                   onChange={(e) => setCategory(e.target.value)}
                 >
                   <option value="">Please choose a category</option>
-                  {categories?.map((category) => {
+                  {categories?.data?.map((category) => {
                     return (
                       <option value={category.name} key={category._id}>
                         {category.name}

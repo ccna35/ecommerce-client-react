@@ -6,6 +6,7 @@ const API_URL = import.meta.env.DEV
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
+  credentials: "include",
 });
 
 export const apiSlice = createApi({

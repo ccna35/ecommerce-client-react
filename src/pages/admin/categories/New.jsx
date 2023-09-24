@@ -1,7 +1,7 @@
 import { PhotoIcon } from "@heroicons/react/20/solid";
 import BackButton from "../../../components/common/BackButton";
 import { useState } from "react";
-import { useAddCategoryMutation } from "../../../slices/categoriesApiSlice";
+import { useAddCategoryMutation } from "../../../slices/ApiSlices/categoriesApiSlice";
 import { useNavigate } from "react-router-dom";
 
 const NewCategoryPage = () => {

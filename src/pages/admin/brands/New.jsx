@@ -1,6 +1,6 @@
 import { PhotoIcon } from "@heroicons/react/20/solid";
 import BackButton from "../../../components/common/BackButton";
-import { useAddBrandMutation } from "../../../slices/brandsApiSlice";
+import { useAddBrandMutation } from "../../../slices/ApiSlices/brandsApiSlice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

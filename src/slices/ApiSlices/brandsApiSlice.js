@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlice";
-const BRANDS_URL = "/brands";
+const BRANDS_URL = "/brand";
 
 export const brandApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
