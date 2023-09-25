@@ -1,9 +1,18 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { removeItem, updateItem } from "../slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  decrementQuantity,
+  incrementQuantity,
+  removeItem,
+} from "../slices/cartSlice";
 
 const CartItem = ({ product }) => {
-  const [quantity, setQuantity] = useState(1);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const cartItem = cartItems?.find(
+    (item) => item.productId == product.productId
+  );
+
+  // console.log(cartItem);
 
   const dispatch = useDispatch();
 
@@ -11,15 +20,15 @@ const CartItem = ({ product }) => {
     dispatch(removeItem(productId));
   };
 
-  const handleUpdateCartItem = (productId, quantity) => {
-    dispatch(updateItem({ productId, quantity }));
-  };
+  // const handleUpdateCartItem = (productId, quantity) => {
+  //   dispatch(updateItem({ productId, quantity }));
+  // };
 
-  const handleUpdateQuantity = (value) => {
-    setQuantity((prev) => prev + value);
+  // const handleUpdateQuantity = (value) => {
+  //   setQuantity((prev) => prev + value);
 
-    handleUpdateCartItem(product.productId, quantity);
-  };
+  //   handleUpdateCartItem(product.productId, quantity);
+  // };
 
   return (
     <li className="flex py-6">
@@ -42,20 +51,22 @@ const CartItem = ({ product }) => {
           <div className="mt-1 text-sm text-gray-500 inline-flex gap-2">
             <button
               className="py-1 px-4 rounded-sm bg-gray-200"
-              onClick={() => handleUpdateQuantity(-1)}
+              onClick={() => dispatch(decrementQuantity(product.productId))}
             >
               -
             </button>
             <button
               className="py-1 px-4 rounded-sm bg-gray-200"
-              onClick={() => handleUpdateQuantity(1)}
+              onClick={() => dispatch(incrementQuantity(product.productId))}
             >
               +
             </button>
           </div>
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-gray-500">Qty {quantity}</p>
+          <p className="text-gray-500">
+            Qty {cartItem ? cartItem.quantity : 1}
+          </p>
 
           <div className="flex">
             <button

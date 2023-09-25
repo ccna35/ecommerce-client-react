@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AiFillPlusSquare, AiFillStar } from "react-icons/ai";
 import ProductQuickView from "./ProductPage/ProductQuickView";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../slices/cartSlice";
 
 const ProductCard = ({ product }) => {
@@ -10,16 +10,24 @@ const ProductCard = ({ product }) => {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    const data = {
-      productId: product._id,
-      image: product.image,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-    };
+  const { cartItems } = useSelector((state) => state.cart);
 
-    dispatch(addItem(data));
+  const handleAddToCart = () => {
+    const cartItem = cartItems.filter(
+      (item) => item.productId == product.productId
+    );
+    console.log(cartItem);
+    if (cartItem.length == 0) {
+      const data = {
+        productId: product._id,
+        image: product.image,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      };
+
+      dispatch(addItem(data));
+    }
   };
 
   return (
