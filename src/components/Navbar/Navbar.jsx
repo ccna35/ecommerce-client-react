@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 import ShoppingCart from "../ShoppingCart";
 import { MdSpaceDashboard } from "react-icons/md";
+import { HiMenuAlt3 } from "react-icons/hi";
 import UserMenu from "./UserMenu";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -108,6 +109,9 @@ const Navbar = () => {
           </Menu>
         </div>
         <div className="menu flex gap-4">
+          {/* <div className="lg:hidden w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer">
+            <HiMenuAlt3 size={24} />
+          </div> */}
           {userInfo?.isAdmin && (
             <Link
               to="/dashboard"
@@ -122,9 +126,11 @@ const Navbar = () => {
             className="relative w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
             onClick={() => setOpenShoppingCart(true)}
           >
-            <span className="absolute w-5 h-5 text-xs right-0 -top-2 outline outline-2 outline-white text-center leading-5 rounded-full bg-chestnutRose text-white">
-              {cartItems?.length}
-            </span>
+            {cartItems.length > 0 && (
+              <span className="absolute w-5 h-5 text-xs right-0 -top-2 outline outline-2 outline-white text-center leading-5 rounded-full bg-chestnutRose text-white">
+                {cartItems?.length}
+              </span>
+            )}
             <ShoppingBag size={24} />
             <ShoppingCart
               openShoppingCart={openShoppingCart}

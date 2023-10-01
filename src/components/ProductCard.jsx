@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { AiFillPlusSquare, AiFillStar } from "react-icons/ai";
+import { TiDelete } from "react-icons/ti";
+import { AiFillHeart } from "react-icons/ai";
 import ProductQuickView from "./ProductPage/ProductQuickView";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../slices/cartSlice";
+import { addItem, removeItem } from "../slices/cartSlice";
+import axios from "axios";
 
 const ProductCard = ({ product }) => {
   const [openQuickView, setOpenQuickView] = useState(false);
@@ -12,11 +15,14 @@ const ProductCard = ({ product }) => {
 
   const { cartItems } = useSelector((state) => state.cart);
 
+  const itemAddedToCart = cartItems.find(
+    (item) => item.productId == product._id
+  );
+
   const handleAddToCart = () => {
     const cartItem = cartItems.filter(
       (item) => item.productId == product.productId
     );
-    console.log(cartItem);
     if (cartItem.length == 0) {
       const data = {
         productId: product._id,
@@ -30,11 +36,30 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const handleWishlist = async () => {
+    try {
+      const res = await axios.patch(
+        "http://localhost:8080/wishlist",
+        {
+          productId: product._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm relative transition-shadow duration-300 hover:shadow-lg overflow-hidden">
       {/* <span className="absolute z-10 top-2 left-2 py-2 px-4 bg-chestnutRose text-white text-xs rounded-full">
         25% off
       </span> */}
+
       <div className="relative h-60 group">
         <Link to={`/product/${product._id}`}>
           <img
@@ -68,11 +93,28 @@ const ProductCard = ({ product }) => {
               </span>
             </div>
           </div>
-          <AiFillPlusSquare
-            className="text-chestnutRose cursor-pointer"
-            size={30}
-            onClick={handleAddToCart}
-          />
+
+          <div className="flex gap-4 items-center">
+            <span
+              className="cursor-pointer text-gray-400"
+              onClick={handleWishlist}
+            >
+              <AiFillHeart size={20} />
+            </span>
+            {itemAddedToCart ? (
+              <TiDelete
+                className="text-chestnutRose cursor-pointer"
+                size={30}
+                onClick={() => dispatch(removeItem(product._id))}
+              />
+            ) : (
+              <AiFillPlusSquare
+                className="text-chestnutRose cursor-pointer"
+                size={30}
+                onClick={handleAddToCart}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

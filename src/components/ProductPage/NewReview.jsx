@@ -1,7 +1,34 @@
-const NewReview = () => {
+import axios from "axios";
+import { useState } from "react";
+
+const NewReview = ({ productId }) => {
+  const [rating, setRating] = useState(1);
+  const [comment, setComment] = useState("");
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    const body = {
+      rating,
+      comment,
+    };
+    console.log(body);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/product/" + productId + "/review",
+        body,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="bg-white rounded-md p-4 shadow-sm max-w-xl">
-      <form className="">
+      <form className="" onSubmit={handleSubmitReview}>
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div className="sm:col-span-6">
             <input
@@ -20,6 +47,7 @@ const NewReview = () => {
                 id="description"
                 placeholder="Description"
                 className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
+                onChange={(e) => setComment(e.target.value)}
               />
             </div>
           </div>
@@ -31,6 +59,7 @@ const NewReview = () => {
               name="rating"
               id="rating"
               className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
+              onChange={(e) => setRating(e.target.value)}
             >
               <option value="1">1</option>
               <option value="2">2</option>

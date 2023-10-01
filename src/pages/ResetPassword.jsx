@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+export default function ResetPasswordPage() {
+  const params = useParams();
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -15,21 +18,30 @@ export default function ForgotPasswordPage() {
 
   const handleResetPassword = async () => {
     setIsLoading(true);
-    if (email) {
+    if (password === confirmPassword) {
       try {
-        const res = await axios.post("http://localhost:8080/forgotPassword", {
-          email,
-        });
+        const res = await axios.patch(
+          `http://localhost:8080/reset-password/${params.id}/${params.token}`,
+          {
+            password,
+          },
+          {
+            withCredentials: true,
+          }
+        );
 
         console.log(res);
-        setSuccessMsg(res.data.message);
+        // setSuccessMsg(res.data.message);
         setIsLoading(false);
         setErrorMsg("");
       } catch (error) {
-        console.log(error.response.data.message);
-        setErrorMsg(error.response.data.message);
+        console.log(error);
+        // setErrorMsg(error.response.data.message);
         setIsLoading(false);
       }
+    } else {
+      setErrorMsg("Passwords don't match!");
+      setIsLoading(false);
     }
   };
 
@@ -48,31 +60,44 @@ export default function ForgotPasswordPage() {
             <img src="/logo.svg" alt="Logo" />
           </Link>
         </div>
-        <h2 className="text-2xl text-mainColor text-center mt-8">
-          Enter your email to reset your password
-        </h2>
-        <form className="max-w-md py-8">
+        <form className="max-w-md py-16">
           <div className="space-y-12">
             <div className="pb-12">
+              <h2 className="text-2xl text-mainColor">Reset your password</h2>
               <div className="mt-10 grid grid-cols-1 gap-y-4 sm:grid-cols-6">
                 <div className="sm:col-span-6">
                   <label
-                    htmlFor="email"
+                    htmlFor="password"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Email address
+                    Password
                   </label>
-                  <div className="mt-2">
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+                <div className="sm:col-span-6">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    autoComplete="password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
                 </div>
                 <div className="sm:col-span-6">
                   <button

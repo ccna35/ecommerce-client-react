@@ -23,6 +23,7 @@ import SellersPage from "./pages/admin/sellers/Sellers";
 import UserOrdersPage from "./pages/profile/orders/Orders";
 import WishlistPage from "./pages/profile/wishlist/Wishlist";
 import ForgotPasswordPage from "./pages/ForgotPassword";
+import ResetPasswordPage from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -73,7 +74,11 @@ function App() {
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/forgotpassword" element={<ForgotPasswordPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route
+        path="/reset-password/:id/:token"
+        element={<ResetPasswordPage />}
+      />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
   );

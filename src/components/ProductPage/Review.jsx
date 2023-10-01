@@ -1,7 +1,7 @@
 import { AiFillStar } from "react-icons/ai";
 
-const Review = () => {
-  const rating = 3;
+const Review = ({ review }) => {
+  // const rating = 3;
 
   const stars = [
     {
@@ -21,6 +21,26 @@ const Review = () => {
     },
   ];
 
+  // Input date string
+  const dateString = "2023-09-30T01:24:51.649Z";
+
+  // Parse the date string into a Date object
+  const date = new Date(review.createdAt);
+
+  // Define formatting options
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
+  // Format the date according to the options
+  const formattedDate = date.toLocaleDateString("en-US", options);
+
+  console.log(formattedDate);
+
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
       <div className="mb-2 flex">
@@ -28,7 +48,7 @@ const Review = () => {
           return (
             <span
               className={`${
-                star.id <= rating ? "text-yellow-500" : "text-gray-400"
+                star.id <= review.rating ? "text-yellow-500" : "text-gray-400"
               }`}
               key={star.id}
             >
@@ -37,14 +57,12 @@ const Review = () => {
           );
         })}
       </div>
-      <h2 className="text-xl md:text-2xl font-medium leading-normal text-gray-800">
-        Beautiful addition to the theme
-      </h2>
+      {/* <h2 className="text-xl md:text-2xl font-medium leading-normal text-gray-800">
+        This is a headline
+      </h2> */}
       <div>
         <p className="mt-3 text-base leading-normal text-gray-600 w-full md:w-9/12 xl:w-5/6">
-          When you want to decorate your home, the idea of choosing a decorative
-          theme can seem daunting. Some themes seem to have an endless amount of
-          pieces, while others can feel hard to accomplish
+          {review.comment}
         </p>
 
         <div className="mt-6 flex justify-start items-center flex-row space-x-2.5">
@@ -59,7 +77,9 @@ const Review = () => {
             <p className="text-base font-medium leading-none text-gray-800">
               Anna Kendrick
             </p>
-            <p className="text-sm leading-none text-gray-600">14 July 2021</p>
+            <p className="text-sm leading-none text-gray-600">
+              {formattedDate}
+            </p>
           </div>
         </div>
       </div>

@@ -100,6 +100,12 @@ export default function LoginPage() {
                   />
                 </div>
                 <div className="sm:col-span-6">
+                  <Link to="/forgot-password" className="text-chestnutRose">
+                    Forgot Password?
+                  </Link>
+                </div>
+
+                <div className="sm:col-span-6">
                   <button
                     type="button"
                     onClick={handleLogin}

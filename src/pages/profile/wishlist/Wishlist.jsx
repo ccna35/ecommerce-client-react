@@ -1,7 +1,22 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import OrderList from "../../../components/Dashboard/OrderList";
+import axios from "axios";
 
 const WishlistPage = () => {
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/wishlist", {
+          withCredentials: true,
+        });
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
       <div className="mb-4 flex justify-between">

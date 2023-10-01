@@ -12,23 +12,11 @@ const CartItem = ({ product }) => {
     (item) => item.productId == product.productId
   );
 
-  // console.log(cartItem);
-
   const dispatch = useDispatch();
 
   const handleRemoveItemFromCart = (productId) => {
     dispatch(removeItem(productId));
   };
-
-  // const handleUpdateCartItem = (productId, quantity) => {
-  //   dispatch(updateItem({ productId, quantity }));
-  // };
-
-  // const handleUpdateQuantity = (value) => {
-  //   setQuantity((prev) => prev + value);
-
-  //   handleUpdateCartItem(product.productId, quantity);
-  // };
 
   return (
     <li className="flex py-6">

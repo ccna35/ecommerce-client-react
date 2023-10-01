@@ -58,7 +58,7 @@ const NewProductPage = () => {
           brand,
           price,
           category,
-          quantity,
+          countInStock: quantity,
           image,
           user: userInfo?.id,
         }).unwrap();

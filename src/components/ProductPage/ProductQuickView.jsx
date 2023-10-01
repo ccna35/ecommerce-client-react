@@ -1,13 +1,40 @@
-import { Fragment, useState } from "react";
-import { Dialog, RadioGroup, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { StarIcon } from "@heroicons/react/20/solid";
+// import { StarIcon } from "@heroicons/react/20/solid";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../../slices/cartSlice";
 
 export default function ProductQuickView({
   openQuickView,
   setOpenQuickView,
   product,
 }) {
+  const dispatch = useDispatch();
+
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const itemAddedToCart = cartItems.find(
+    (item) => item.productId == product._id
+  );
+
+  const handleAddToCart = () => {
+    const cartItem = cartItems.filter(
+      (item) => item.productId == product.productId
+    );
+    if (cartItem.length == 0) {
+      const data = {
+        productId: product._id,
+        image: product.image,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+      };
+
+      dispatch(addItem(data));
+    }
+  };
+
   return (
     <Transition.Root show={openQuickView} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpenQuickView}>
@@ -85,12 +112,26 @@ export default function ProductQuickView({
                         </div>
                       </section>
 
-                      <button
-                        type="submit"
-                        className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-chestnutRose px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2"
-                      >
-                        Add to bag
-                      </button>
+                      {itemAddedToCart ? (
+                        <button
+                          type="submit"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2"
+                          onClick={() => {
+                            console.log("clicked");
+                            dispatch(removeItem(product._id));
+                          }}
+                        >
+                          Remove from cart
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-chestnutRose px-8 py-3 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-offset-2"
+                          onClick={handleAddToCart}
+                        >
+                          Add to cart
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

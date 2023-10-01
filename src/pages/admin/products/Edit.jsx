@@ -23,20 +23,14 @@ const EditProductPage = () => {
 
   const { data: brands, isLoading: areBrandsLoading } = useGetAllBrandsQuery();
 
-  console.log(brands);
-
   const params = useParams();
 
-  const {
-    data: productDetails,
-    isLoading: areProductDetailsLoading,
-    isError,
-    error,
-    isSuccess,
-  } = useGetProductDetailsQuery(params.id);
+  const { data: productDetails, isLoading: areProductDetailsLoading } =
+    useGetProductDetailsQuery(params.id);
 
-  const [updateProductDetails, { isLoading }] =
-    useUpdateProductDetailsMutation();
+  console.log(productDetails);
+
+  const [updateProductDetails] = useUpdateProductDetailsMutation();
 
   const navigate = useNavigate();
 
@@ -65,7 +59,7 @@ const EditProductPage = () => {
       price: price || productDetails.price,
       brand: brand || productDetails.brand,
       category: category || productDetails.category,
-      quantity: quantity || productDetails.quantity,
+      countInStock: quantity || productDetails.countInStock,
       image,
     };
 
@@ -153,7 +147,7 @@ const EditProductPage = () => {
                     type="number"
                     placeholder="Quantity"
                     min={0}
-                    defaultValue={productDetails.quantity}
+                    defaultValue={productDetails.countInStock}
                     onChange={(e) => setQuantity(e.target.value)}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
                   />
