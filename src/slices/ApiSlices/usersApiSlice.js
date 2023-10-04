@@ -1,5 +1,8 @@
 import { apiSlice } from "./apiSlice";
-const USERS_URL = "http://localhost:8080";
+// const USERS_URL = "http://localhost:8080";
+const USERS_URL = import.meta.env.DEV
+  ? import.meta.env.VITE_DEV_URL_USER
+  : import.meta.env.VITE_PRODUCTION_URL_USER;
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

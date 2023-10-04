@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { HiMenuAlt2 } from "react-icons/hi";
+import DashboardMenu from "../../components/DashboardMenu";
 
 const Admin = () => {
   const cards = [
@@ -55,9 +56,6 @@ const Admin = () => {
 
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
-      <div className="lg:hidden mb-4 w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer">
-        <HiMenuAlt2 size={24} />
-      </div>
       <div className="flex gap-4 items-center mb-8">
         <h1>Hello {userInfo?.firstName}</h1>
         <p className="py-1 px-2 bg-chestnutRose text-white rounded-sm text-sm">

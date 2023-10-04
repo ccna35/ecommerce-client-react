@@ -1,8 +1,8 @@
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react";
 
 const API_URL = import.meta.env.DEV
-  ? "http://localhost:8080/api"
-  : "https://online-store-server-dr62.onrender.com/api";
+  ? import.meta.env.VITE_DEV_URL
+  : import.meta.env.VITE_PRODUCTION_URL;
 
 // console.log(import.meta.env.VITE_PRODUCTION_URL);
 

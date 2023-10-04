@@ -4,10 +4,11 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 import ShoppingCart from "../ShoppingCart";
 import { MdSpaceDashboard } from "react-icons/md";
-import { HiMenuAlt3 } from "react-icons/hi";
 import UserMenu from "./UserMenu";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { HiMenuAlt2 } from "react-icons/hi";
+import DashboardMenu from "../DashboardMenu";
 
 const dropdownItems = [
   {
@@ -46,6 +47,7 @@ const dropdownItems = [
 
 const Navbar = () => {
   const [openShoppingCart, setOpenShoppingCart] = useState(false);
+  const [openDashboardMenu, setOpenDashboardMenu] = useState(false);
 
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
@@ -109,9 +111,6 @@ const Navbar = () => {
           </Menu>
         </div>
         <div className="menu flex gap-4">
-          {/* <div className="lg:hidden w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer">
-            <HiMenuAlt3 size={24} />
-          </div> */}
           {userInfo?.isAdmin && (
             <Link
               to="/dashboard"
@@ -135,6 +134,16 @@ const Navbar = () => {
             <ShoppingCart
               openShoppingCart={openShoppingCart}
               setOpenShoppingCart={setOpenShoppingCart}
+            />
+          </div>
+          <div
+            className="lg:hidden mb-4 w-12 h-12 grid place-items-center bg-gray-100 rounded-full text-mainColor cursor-pointer"
+            onClick={() => setOpenDashboardMenu(true)}
+          >
+            <HiMenuAlt2 size={24} />
+            <DashboardMenu
+              openDashboardMenu={openDashboardMenu}
+              setOpenDashboardMenu={setOpenDashboardMenu}
             />
           </div>
         </div>
