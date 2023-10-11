@@ -87,9 +87,9 @@ const EditProductPage = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-6">
-                <div className="mt-2 flex justify-between items-center">
+            <div className="grid gap-x-6 gap-y-8 grid-cols-6">
+              <div className="col-span-6">
+                <div className="mt-2 flex justify-between items-end gap-4">
                   <div className="w-full sm:max-w-sm">
                     <label
                       htmlFor="product-name"
@@ -114,7 +114,7 @@ const EditProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-6">
+              <div className="col-span-6">
                 <div className="mt-2">
                   <label
                     htmlFor="description"
@@ -133,7 +133,7 @@ const EditProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <div className="mt-2">
                   <label
                     htmlFor="quantity"
@@ -154,7 +154,7 @@ const EditProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <div className="mt-2">
                   <label
                     htmlFor="price"
@@ -174,7 +174,7 @@ const EditProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <label
                   htmlFor="products"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -199,7 +199,7 @@ const EditProductPage = () => {
                   })}
                 </select>
               </div>
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <label
                   htmlFor="categories"
                   className="block text-sm font-medium leading-6 text-gray-900"
@@ -224,16 +224,8 @@ const EditProductPage = () => {
                   })}
                 </select>
               </div>
-              <div className="sm:col-span-3">
-                <div className="relative w-full h-40">
-                  <img
-                    src={image || productDetails.image}
-                    alt={productDetails.name}
-                    className="absolute w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-3">
+
+              <div className="col-span-6">
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     <PhotoIcon
@@ -260,6 +252,15 @@ const EditProductPage = () => {
                       PNG, JPG, GIF up to 10MB
                     </p>
                   </div>
+                </div>
+              </div>
+              <div className="col-span-6">
+                <div className="relative w-full h-40">
+                  <img
+                    src={image || productDetails.image}
+                    alt={productDetails.name}
+                    className="absolute w-full h-full object-contain"
+                  />
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAddProductMutation } from "../../../slices/ApiSlices/productsApiSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const NewProductPage = () => {
   const [productName, setProductName] = useState("");
@@ -41,6 +42,38 @@ const NewProductPage = () => {
 
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (
+  //     productName &&
+  //     productDescription &&
+  //     brand &&
+  //     price &&
+  //     category &&
+  //     quantity
+  //   ) {
+  //     try {
+  //       const res = await addProduct({
+  //         name: productName,
+  //         description: productDescription,
+  //         brand,
+  //         price,
+  //         category,
+  //         countInStock: quantity,
+  //         image,
+  //         user: userInfo?.id,
+  //       }).unwrap();
+  //       console.log(res);
+
+  //       navigate("/dashboard/products");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     console.log("All fields are required!");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -52,19 +85,24 @@ const NewProductPage = () => {
       quantity
     ) {
       try {
-        const res = await addProduct({
-          name: productName,
-          description: productDescription,
-          brand,
-          price,
-          category,
-          countInStock: quantity,
-          image,
-          user: userInfo?.id,
-        }).unwrap();
-        console.log(res);
+        const res = await axios.post(
+          "https://online-store-server-dr62.onrender.com/api/product/",
+          {
+            name: productName,
+            description: productDescription,
+            brand,
+            price,
+            category,
+            countInStock: quantity,
+            image,
+            user: userInfo?.id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
 
-        navigate("/dashboard/products");
+        console.log(res);
       } catch (error) {
         console.log(error);
       }
@@ -78,9 +116,9 @@ const NewProductPage = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <div>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-6">
-                <div className="mt-2 flex justify-between items-center">
+            <div className="grid gap-x-6 gap-y-8 grid-cols-6">
+              <div className="col-span-6">
+                <div className="mt-2 flex justify-between items-center gap-4">
                   <input
                     type="text"
                     name="product-name"
@@ -107,7 +145,7 @@ const NewProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <div className="mt-2">
                   <input
                     id="quantity"
@@ -122,7 +160,7 @@ const NewProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <div className="mt-2">
                   <input
                     id="price"
@@ -137,7 +175,7 @@ const NewProductPage = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <label htmlFor="brand">Brand:</label>
                 <select
                   name="brand"
@@ -156,7 +194,7 @@ const NewProductPage = () => {
                   })}
                 </select>
               </div>
-              <div className="sm:col-span-3">
+              <div className="col-span-3">
                 <label htmlFor="category">Category:</label>
 
                 <select
@@ -176,7 +214,7 @@ const NewProductPage = () => {
                   })}
                 </select>
               </div>
-              <div className="sm:col-span-3">
+              <div className="col-span-6">
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     <PhotoIcon
@@ -206,8 +244,8 @@ const NewProductPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-3">
-                <img className="" src={image} alt="" />
+              <div className="col-span-3">
+                <img src={image} alt="" />
               </div>
             </div>
           </div>

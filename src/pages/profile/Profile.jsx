@@ -7,7 +7,7 @@ import { setCredentials } from "../../slices/authSlice";
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   const [firstName, setFirstName] = useState(userInfo?.firstName);
   const [lastName, setLastName] = useState(userInfo?.lastName);
@@ -22,7 +22,7 @@ const Profile = () => {
 
   const handleSubmit = async () => {
     const body = {
-      id: userInfo?.id,
+      id: userInfo?._id,
       updatedData: {
         firstName,
         lastName,
@@ -32,16 +32,18 @@ const Profile = () => {
       },
     };
 
+    console.log(body);
+
     const res = await updateUser(body).unwrap();
-    dispatch(setCredentials({ ...res }));
-    // console.log(res);
-    // if (res.isAdmin) {
-    //   console.log(res.isAdmin);
-    //   navigate("/dashboard");
-    // } else {
-    //   console.log(res.isAdmin);
-    //   navigate("/profile");
-    // }
+    dispatch(setCredentials({ ...res.updatedNew }));
+    console.log(res);
+    if (res.updatedNew.isAdmin) {
+      console.log(res.updatedNew.isAdmin);
+      navigate("/dashboard");
+    } else {
+      console.log(res.updatedNew.isAdmin);
+      navigate("/profile");
+    }
   };
 
   return (

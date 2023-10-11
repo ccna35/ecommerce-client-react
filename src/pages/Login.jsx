@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../slices/ApiSlices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,6 +22,18 @@ export default function LoginPage() {
         email,
         password,
       };
+
+      // console.log(import.meta.env.VITE_PRODUCTION_URL_USER);
+
+      // const res = await axios.post(
+      //   import.meta.env.VITE_DEV_URL_USER + "/login",
+      //   body,
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+
+      // console.log(res);
 
       const res = await login(body).unwrap();
       dispatch(setCredentials({ ...res.user }));

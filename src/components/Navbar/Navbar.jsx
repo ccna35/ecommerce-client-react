@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { HiMenuAlt2 } from "react-icons/hi";
 import DashboardMenu from "../DashboardMenu";
+import axios from "axios";
 
 const dropdownItems = [
   {
@@ -48,9 +49,25 @@ const dropdownItems = [
 const Navbar = () => {
   const [openShoppingCart, setOpenShoppingCart] = useState(false);
   const [openDashboardMenu, setOpenDashboardMenu] = useState(false);
+  const [query, setQuery] = useState("");
 
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
+
+  const handleSearch = async (e) => {
+    console.log(e.target.value);
+    if (e.target.value != "") {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/api/product/search/query?name=${e.target.value}&brand=&category=&price=9999`
+        );
+
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <nav className="bg-white py-4 border-b relative z-10">
@@ -68,6 +85,7 @@ const Navbar = () => {
             placeholder="Searching for..."
             aria-label="Search"
             aria-describedby="button-addon1"
+            onChange={handleSearch}
           />
           <Menu as="div" className="relative inline-block text-left border-l">
             <div>
