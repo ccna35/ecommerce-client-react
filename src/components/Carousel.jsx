@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const products = [
   {
@@ -41,9 +41,22 @@ const products = [
 export default function DefaultCarousel() {
   const [activeSlide, setActiveSlide] = useState(1);
 
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (activeSlide === 5) {
+        setActiveSlide(1);
+      } else {
+        setActiveSlide((prev) => prev + 1);
+      }
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [activeSlide]);
+
   return (
     <div className="w-full min-h-[30rem] py-8">
-      <div className="overflow-x-hidden">
+      <div className="flex">
         {products.map((item) => {
           return (
             <div

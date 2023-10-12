@@ -8,15 +8,15 @@ import DefaultCarousel from "../components/Carousel";
 import ProductCard from "../components/ProductCard";
 import { useGetAllProductsQuery } from "../slices/ApiSlices/productsApiSlice";
 import { useGetAllCategoriesQuery } from "../slices/ApiSlices/categoriesApiSlice";
+import ProductCardLoader from "../components/SkeletonLoader/ProductCardLoader";
 
 const Home = () => {
   const {
     data: products,
-    // isLoading: areProductsLoading,
+    isLoading: areProductsLoading,
     isError: isProductsError,
     error: productsError,
   } = useGetAllProductsQuery();
-  console.log(products);
   const {
     data: categories,
     // isLoading: areCategoriesLoading,
@@ -48,9 +48,17 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products?.products?.map((product) => {
-              return <ProductCard product={product} key={product._id} />;
-            })}
+            {areProductsLoading ? (
+              <>
+                <ProductCardLoader />
+                <ProductCardLoader />
+                <ProductCardLoader />
+              </>
+            ) : (
+              products?.products?.map((product) => {
+                return <ProductCard product={product} key={product._id} />;
+              })
+            )}
           </div>
         </div>
       </section>

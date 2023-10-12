@@ -1,8 +1,6 @@
 import { AiFillStar } from "react-icons/ai";
 
 const Review = ({ review }) => {
-  // const rating = 3;
-
   const stars = [
     {
       id: 1,
@@ -21,9 +19,6 @@ const Review = ({ review }) => {
     },
   ];
 
-  // Input date string
-  const dateString = "2023-09-30T01:24:51.649Z";
-
   // Parse the date string into a Date object
   const date = new Date(review.createdAt);
 
@@ -38,8 +33,6 @@ const Review = ({ review }) => {
 
   // Format the date according to the options
   const formattedDate = date.toLocaleDateString("en-US", options);
-
-  console.log(formattedDate);
 
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">
@@ -75,7 +68,7 @@ const Review = ({ review }) => {
           </div>
           <div className="flex flex-col justify-start items-start space-y-2">
             <p className="text-base font-medium leading-none text-gray-800">
-              Anna Kendrick
+              {review.userId.firstName + " " + review.userId.lastName}
             </p>
             <p className="text-sm leading-none text-gray-600">
               {formattedDate}

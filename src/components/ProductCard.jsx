@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../slices/cartSlice";
 import axios from "axios";
+import { useUpdateWishlistMutation } from "../slices/ApiSlices/usersApiSlice";
 
 const ProductCard = ({ product }) => {
   const [openQuickView, setOpenQuickView] = useState(false);
@@ -36,17 +37,23 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  const [updateWishlist] = useUpdateWishlistMutation();
+
   const handleWishlist = async () => {
     try {
-      const res = await axios.patch(
-        "http://localhost:8080/wishlist",
-        {
-          productId: product._id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      // const res = await axios.patch(
+      //   "http://localhost:8080/wishlist",
+      //   {
+      //     productId: product._id,
+      //   },
+      //   {
+      //     withCredentials: true,
+      //   }
+      // );
+
+      const res = await updateWishlist({
+        productId: product._id,
+      }).unwrap();
 
       console.log(res);
     } catch (error) {

@@ -26,7 +26,7 @@ const ProductPage = () => {
   }
 
   if (isSuccess) {
-    console.log(data);
+    // setReviews([...data.reviews]);
   }
 
   if (isLoading) {
@@ -84,7 +84,13 @@ const ProductPage = () => {
         </div>
       </div>
       <div className="my-8 w-full flex flex-col gap-4">
-        {userInfo && <NewReview productId={params.id} />}
+        {userInfo ? (
+          <NewReview productId={params.id} />
+        ) : (
+          <p className="py-2 px-4 rounded-sm bg-red-100 border border-red-200 text-red-500 w-fit">
+            You must be logged in to leave a review!
+          </p>
+        )}
 
         <div className="flex flex-col gap-4">
           {data?.reviews.map((review) => {

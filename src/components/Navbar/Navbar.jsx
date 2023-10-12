@@ -51,6 +51,10 @@ const Navbar = () => {
   const [openDashboardMenu, setOpenDashboardMenu] = useState(false);
   const [query, setQuery] = useState("");
 
+  function closeModal() {
+    setOpenShoppingCart(false);
+  }
+
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -151,7 +155,7 @@ const Navbar = () => {
             <ShoppingBag size={24} />
             <ShoppingCart
               openShoppingCart={openShoppingCart}
-              setOpenShoppingCart={setOpenShoppingCart}
+              closeModal={closeModal}
             />
           </div>
           <div

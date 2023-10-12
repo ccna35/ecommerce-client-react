@@ -41,6 +41,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
       query: () => USERS_URL,
       providesTags: ["User"],
     }),
+    updateWishlist: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/wishlist`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -51,4 +58,5 @@ export const {
   useUpdateUserMutation,
   useFetchProfileQuery,
   useGetAllUsersQuery,
+  useUpdateWishlistMutation,
 } = userApiSlice;

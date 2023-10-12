@@ -4,10 +4,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 
-export default function ShoppingCart({
-  openShoppingCart,
-  setOpenShoppingCart,
-}) {
+export default function ShoppingCart({ openShoppingCart, closeModal }) {
   const { cartItems } = useSelector((state) => state.cart);
 
   const totalPrice = cartItems?.reduce((accumulator, currentValue) => {
@@ -16,7 +13,7 @@ export default function ShoppingCart({
 
   return (
     <Transition.Root show={openShoppingCart} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpenShoppingCart}>
+      <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -52,7 +49,7 @@ export default function ShoppingCart({
                           <button
                             type="button"
                             className="-m-2 p-2 text-gray-400 hover:text-gray-500"
-                            onClick={() => setOpenShoppingCart(false)}
+                            onClick={closeModal}
                           >
                             <span className="sr-only">Close panel</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
@@ -100,7 +97,7 @@ export default function ShoppingCart({
                         <button
                           type="button"
                           className="font-medium text-chestnutRose"
-                          onClick={() => setOpenShoppingCart(false)}
+                          onClick={closeModal}
                         >
                           Continue Shopping
                           <span aria-hidden="true"> &rarr;</span>

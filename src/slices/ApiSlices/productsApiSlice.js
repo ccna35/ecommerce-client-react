@@ -32,7 +32,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
     getProductDetails: builder.query({
       query: (id) => PRODUCTS_URL + "/" + id,
-      providesTags: ["Product"],
+      providesTags: ["Product", "Review"],
     }),
 
     updateProductDetails: builder.mutation({

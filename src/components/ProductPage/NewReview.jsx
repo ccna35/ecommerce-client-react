@@ -1,27 +1,26 @@
-import axios from "axios";
 import { useState } from "react";
+import { useAddReviewMutation } from "../../slices/ApiSlices/reviewsApiSlice";
 
-const NewReview = ({ productId }) => {
+const NewReview = ({ productId, setReviews }) => {
   const [rating, setRating] = useState(1);
   const [comment, setComment] = useState("");
+
+  const [addReview] = useAddReviewMutation();
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
     const body = {
       rating,
       comment,
+      id: productId,
     };
     console.log(body);
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/product/" + productId + "/review",
-        body,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await addReview(body).unwrap();
 
       console.log(res);
+
+      setReviews((prev) => [...prev, res.review]);
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +29,7 @@ const NewReview = ({ productId }) => {
     <div className="bg-white rounded-md p-4 shadow-sm max-w-xl">
       <form className="" onSubmit={handleSubmitReview}>
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div className="sm:col-span-6">
+          {/* <div className="sm:col-span-6">
             <input
               type="text"
               name="review"
@@ -38,7 +37,7 @@ const NewReview = ({ productId }) => {
               placeholder="Review title"
               className="block w-full sm:max-w-sm rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:text-sm sm:leading-6"
             />
-          </div>
+          </div> */}
 
           <div className="col-span-6">
             <div className="mt-2">

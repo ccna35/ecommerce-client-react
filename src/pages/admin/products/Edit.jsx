@@ -28,8 +28,6 @@ const EditProductPage = () => {
   const { data: productDetails, isLoading: areProductDetailsLoading } =
     useGetProductDetailsQuery(params.id);
 
-  console.log(productDetails);
-
   const [updateProductDetails] = useUpdateProductDetailsMutation();
 
   const navigate = useNavigate();
@@ -225,8 +223,8 @@ const EditProductPage = () => {
                 </select>
               </div>
 
-              <div className="col-span-6">
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+              <div className="col-span-6 md:col-span-3">
+                <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     <PhotoIcon
                       className="mx-auto h-12 w-12 text-gray-300"
@@ -254,7 +252,7 @@ const EditProductPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-6">
+              <div className="col-span-6 md:col-span-3">
                 <div className="relative w-full h-40">
                   <img
                     src={image || productDetails.image}

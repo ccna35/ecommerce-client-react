@@ -214,8 +214,8 @@ const NewProductPage = () => {
                   })}
                 </select>
               </div>
-              <div className="col-span-6">
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+              <div className="col-span-6 md:col-span-3">
+                <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div className="text-center">
                     <PhotoIcon
                       className="mx-auto h-12 w-12 text-gray-300"
@@ -244,9 +244,17 @@ const NewProductPage = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-span-3">
-                <img src={image} alt="" />
-              </div>
+              {image && (
+                <div className="col-span-6 md:col-span-3">
+                  <div className="relative w-full h-40">
+                    <img
+                      src={image}
+                      alt=""
+                      className="absolute w-full h-full object-contain"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
