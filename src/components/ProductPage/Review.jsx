@@ -35,7 +35,7 @@ const Review = ({ review }) => {
   const formattedDate = date.toLocaleDateString("en-US", options);
 
   return (
-    <div className="bg-white rounded-md p-4 shadow-sm">
+    <div className="bg-white rounded-md p-4 shadow-sm w-fit">
       <div className="mb-2 flex">
         {stars.map((star) => {
           return (

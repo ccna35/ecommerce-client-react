@@ -9,6 +9,7 @@ import ProductCard from "../components/ProductCard";
 import { useGetAllProductsQuery } from "../slices/ApiSlices/productsApiSlice";
 import { useGetAllCategoriesQuery } from "../slices/ApiSlices/categoriesApiSlice";
 import ProductCardLoader from "../components/SkeletonLoader/ProductCardLoader";
+import CategoryCardLoader from "../components/SkeletonLoader/CategoryCardLoader";
 
 const Home = () => {
   const {
@@ -19,7 +20,7 @@ const Home = () => {
   } = useGetAllProductsQuery();
   const {
     data: categories,
-    // isLoading: areCategoriesLoading,
+    isLoading: areCategoriesLoading,
     isError: isCategoriesError,
     error: categoriesError,
   } = useGetAllCategoriesQuery();
@@ -71,13 +72,21 @@ const Home = () => {
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {categories?.data?.map((category) => {
-              return (
-                <Link to={"/category/" + category.name} key={category._id}>
-                  <CategoryCard category={category} />
-                </Link>
-              );
-            })}
+            {areCategoriesLoading ? (
+              <>
+                <CategoryCardLoader />
+                <CategoryCardLoader />
+                <CategoryCardLoader />
+              </>
+            ) : (
+              categories?.data?.map((category) => {
+                return (
+                  <Link to={"/category/" + category.name} key={category._id}>
+                    <CategoryCard category={category} />
+                  </Link>
+                );
+              })
+            )}
           </div>
         </div>
       </section>

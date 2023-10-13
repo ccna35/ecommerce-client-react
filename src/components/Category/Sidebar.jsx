@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
+import StarRating from "./StarRating";
 
 export default function CategorySidebar() {
-  const [sliderValue, setSliderValue] = useState(500);
+  const [sliderValue, setSliderValue] = useState(10000);
 
   return (
-    <div className="hidden md:flex flex-col gap-4">
+    <aside className="hidden md:flex flex-col gap-4">
       <div className="bg-white rounded-md shadow-sm">
         <div className="p-4 border-b">
           <p className="text-xl font-semibold">Price</p>
@@ -15,7 +16,9 @@ export default function CategorySidebar() {
             type="range"
             className="transparent h-1.5 w-full cursor-pointer appearance-none rounded-lg border-transparent bg-neutral-200"
             onChange={(e) => setSliderValue(e.target.value)}
-            max={1000}
+            max={10000}
+            min={0}
+            value={sliderValue}
           />
           <div className="flex justify-between">
             <p>$0</p>
@@ -30,13 +33,18 @@ export default function CategorySidebar() {
         <div className="p-4 flex flex-col gap-4">
           <fieldset>
             <div className="space-y-6">
-              <div className="flex items-center gap-x-3">
+              {Array.from({ length: 5 }, (_, index) => index + 1).map(
+                (star) => {
+                  return <StarRating numOfStars={star} key={star} />;
+                }
+              )}
+
+              {/* <div className="flex items-center gap-x-3">
                 <input
                   id="one-star"
                   name="rating"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  checked
                 />
                 <label
                   htmlFor="one-star"
@@ -123,11 +131,11 @@ export default function CategorySidebar() {
                     <AiFillStar />
                   </span>
                 </label>
-              </div>
+              </div> */}
             </div>
           </fieldset>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
