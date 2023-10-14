@@ -2,31 +2,36 @@ import { Search } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useRef, useState } from "react";
-import { useGetProductsByNameQuery } from "../../slices/ApiSlices/productsApiSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { useLazyGetProductsByNameQuery } from "../../slices/ApiSlices/productsApiSlice";
+import { Link } from "react-router-dom";
 import useClickOutside from "../../hooks/useClickOutside ";
 
 const SearchForm = () => {
-  const [query, setQuery] = useState("");
   const [isSearchResultsActive, setIsSearchResultsActive] = useState(false);
+  // const [query, setQuery] = useState("");
 
   const clickRef = useRef();
 
   useClickOutside(clickRef, () => {
     setIsSearchResultsActive(false);
-    // console.log("Triggered!");
   });
 
-  const { data, isLoading, isError, error, isSuccess } =
-    useGetProductsByNameQuery(query);
+  const [trigger, { isError, isSuccess, isLoading, error, currentData, data }] =
+    useLazyGetProductsByNameQuery();
 
   if (isError) {
     console.log(error);
   }
 
   if (isSuccess) {
-    console.log(data.data);
+    console.log(currentData);
   }
+
+  const fetchProducts = (e) => {
+    if (e.target.value != "") {
+      trigger(e.target.value);
+    }
+  };
 
   return (
     <div
@@ -35,10 +40,12 @@ const SearchForm = () => {
     >
       {isSearchResultsActive && (
         <div className="absolute top-full w-full p-2 rounded-md border border-secColor bg-white">
-          {isError && error.status === 404 ? (
+          {isLoading ? (
+            <p className="text-sm">Loading...</p>
+          ) : isError && error.status === 404 ? (
             <p className="text-sm">No products were found!</p>
           ) : (
-            data.data.map((product) => {
+            data?.data?.map((product) => {
               return (
                 <Link
                   to={`/product/${product._id}`}
@@ -73,12 +80,11 @@ const SearchForm = () => {
           placeholder="Searching for..."
           aria-label="Search"
           aria-describedby="button-addon1"
-          onChange={(e) => {
-            if (e.target.value != "") {
-              setQuery(e.target.value);
-            }
+          onChange={fetchProducts}
+          onFocus={() => {
+            setIsSearchResultsActive(true);
           }}
-          onFocus={() => setIsSearchResultsActive(true)}
+          value={query}
         />
       </div>
       {/* <Menu as="div" className="relative inline-block text-left border-l">

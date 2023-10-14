@@ -62,4 +62,5 @@ export const {
   useGetProductDetailsQuery,
   useUpdateProductDetailsMutation,
   useGetProductsByNameQuery,
+  useLazyGetProductsByNameQuery,
 } = productApiSlice;
