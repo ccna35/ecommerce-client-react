@@ -8,7 +8,7 @@ import useClickOutside from "../../hooks/useClickOutside ";
 
 const SearchForm = () => {
   const [isSearchResultsActive, setIsSearchResultsActive] = useState(false);
-  // const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
 
   const clickRef = useRef();
 
@@ -28,6 +28,7 @@ const SearchForm = () => {
   }
 
   const fetchProducts = (e) => {
+    setQuery(e.target.value);
     if (e.target.value != "") {
       trigger(e.target.value);
     }
