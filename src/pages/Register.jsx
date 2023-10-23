@@ -5,13 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
 
 export default function RegisterPage() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [city, setCity] = useState("");
-  const [streetAddress, setStreetAddress] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [password, setPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [city, setCity] = useState("");
+  // const [streetAddress, setStreetAddress] = useState("");
+
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    city: "",
+    streetAddress: "",
+  });
+
+  const onChange = (e) => {
+    console.log(e.target.value);
+    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -21,6 +36,15 @@ export default function RegisterPage() {
   const [register, { isLoading, isError, error }] = useRegisterMutation();
 
   const handleRegister = async () => {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      city,
+      streetAddress,
+    } = data;
     if (password !== confirmPassword) console.log("Passwords don't match!");
 
     if (email && password) {
@@ -80,7 +104,7 @@ export default function RegisterPage() {
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="first-name"
+                    htmlFor="firstName"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     First name
@@ -88,11 +112,11 @@ export default function RegisterPage() {
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="first-name"
-                      id="first-name"
-                      autoComplete="given-name"
+                      name="firstName"
+                      id="firstName"
+                      autoComplete="firstName"
                       required
-                      onChange={(e) => setFirstName(e.target.value)}
+                      onChange={onChange}
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -100,7 +124,7 @@ export default function RegisterPage() {
 
                 <div className="sm:col-span-3">
                   <label
-                    htmlFor="last-name"
+                    htmlFor="lastName"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     Last name
@@ -108,11 +132,11 @@ export default function RegisterPage() {
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="last-name"
-                      id="last-name"
-                      autoComplete="family-name"
+                      name="lastName"
+                      id="lastName"
+                      autoComplete="lastName"
                       required
-                      onChange={(e) => setLastName(e.target.value)}
+                      onChange={onChange}
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -132,7 +156,7 @@ export default function RegisterPage() {
                       type="email"
                       autoComplete="email"
                       required
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={onChange}
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -151,7 +175,7 @@ export default function RegisterPage() {
                     type="password"
                     autoComplete="password"
                     required
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={onChange}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -169,14 +193,14 @@ export default function RegisterPage() {
                     type="password"
                     required
                     autoComplete="password"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onChange={onChange}
                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
 
                 <div className="col-span-full">
                   <label
-                    htmlFor="street-address"
+                    htmlFor="streetAddress"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     Street address
@@ -184,11 +208,11 @@ export default function RegisterPage() {
                   <div className="mt-2">
                     <input
                       type="text"
-                      name="street-address"
-                      id="street-address"
-                      autoComplete="street-address"
+                      name="streetAddress"
+                      id="streetAddress"
+                      autoComplete="streetAddress"
                       required
-                      onChange={(e) => setStreetAddress(e.target.value)}
+                      onChange={onChange}
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -208,7 +232,7 @@ export default function RegisterPage() {
                       id="city"
                       required
                       autoComplete="city"
-                      onChange={(e) => setCity(e.target.value)}
+                      onChange={onChange}
                       className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
