@@ -5,14 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
 
 export default function RegisterPage() {
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [city, setCity] = useState("");
-  // const [streetAddress, setStreetAddress] = useState("");
-
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
