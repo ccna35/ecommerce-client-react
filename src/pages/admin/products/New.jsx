@@ -42,38 +42,6 @@ const NewProductPage = () => {
 
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (
-  //     productName &&
-  //     productDescription &&
-  //     brand &&
-  //     price &&
-  //     category &&
-  //     quantity
-  //   ) {
-  //     try {
-  //       const res = await addProduct({
-  //         name: productName,
-  //         description: productDescription,
-  //         brand,
-  //         price,
-  //         category,
-  //         countInStock: quantity,
-  //         image,
-  //         user: userInfo?.id,
-  //       }).unwrap();
-  //       console.log(res);
-
-  //       navigate("/dashboard/products");
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   } else {
-  //     console.log("All fields are required!");
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -85,24 +53,19 @@ const NewProductPage = () => {
       quantity
     ) {
       try {
-        const res = await axios.post(
-          "https://online-store-server-dr62.onrender.com/api/product/",
-          {
-            name: productName,
-            description: productDescription,
-            brand,
-            price,
-            category,
-            countInStock: quantity,
-            image,
-            user: userInfo?.id,
-          },
-          {
-            withCredentials: true,
-          }
-        );
-
+        const res = await addProduct({
+          name: productName,
+          description: productDescription,
+          brand,
+          price,
+          category,
+          countInStock: quantity,
+          image,
+          user: userInfo?.id,
+        }).unwrap();
         console.log(res);
+
+        navigate("/dashboard/products");
       } catch (error) {
         console.log(error);
       }
@@ -110,6 +73,43 @@ const NewProductPage = () => {
       console.log("All fields are required!");
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (
+  //     productName &&
+  //     productDescription &&
+  //     brand &&
+  //     price &&
+  //     category &&
+  //     quantity
+  //   ) {
+  //     try {
+  //       const res = await axios.post(
+  //         "https://online-store-server-dr62.onrender.com/api/product/",
+  //         {
+  //           name: productName,
+  //           description: productDescription,
+  //           brand,
+  //           price,
+  //           category,
+  //           countInStock: quantity,
+  //           image,
+  //           user: userInfo?.id,
+  //         },
+  //         {
+  //           withCredentials: true,
+  //         }
+  //       );
+
+  //       console.log(res);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     console.log("All fields are required!");
+  //   }
+  // };
 
   return (
     <div className="bg-white rounded-md p-4 shadow-sm">

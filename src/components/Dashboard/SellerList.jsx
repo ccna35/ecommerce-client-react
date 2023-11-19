@@ -11,9 +11,7 @@ export default function SellerList() {
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-      //   console.log(await res.json());
       setUsers(await res.json());
-      //   return res.json();
     })();
 
     // return () => {

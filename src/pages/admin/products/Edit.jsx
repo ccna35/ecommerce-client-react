@@ -25,8 +25,11 @@ const EditProductPage = () => {
 
   const params = useParams();
 
-  const { data: productDetails, isLoading: areProductDetailsLoading } =
-    useGetProductDetailsQuery(params.id);
+  const {
+    data: productDetails,
+    isLoading: areProductDetailsLoading,
+    isSuccess,
+  } = useGetProductDetailsQuery(params.id);
 
   const [updateProductDetails] = useUpdateProductDetailsMutation();
 
@@ -58,7 +61,7 @@ const EditProductPage = () => {
       brand: brand || productDetails.brand,
       category: category || productDetails.category,
       countInStock: quantity || productDetails.countInStock,
-      image,
+      image: image === null ? productDetails.image : image,
     };
 
     console.log(updatedData);

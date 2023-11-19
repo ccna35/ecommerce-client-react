@@ -20,7 +20,8 @@ const NewReview = ({ productId, setReviews }) => {
 
       console.log(res);
 
-      setReviews((prev) => [...prev, res.review]);
+      setComment("");
+      setRating(1);
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +43,7 @@ const NewReview = ({ productId, setReviews }) => {
           <div className="col-span-6">
             <div className="mt-2">
               <textarea
+                value={comment}
                 name="description"
                 id="description"
                 placeholder="Description"
@@ -59,6 +61,7 @@ const NewReview = ({ productId, setReviews }) => {
               id="rating"
               className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-chestnutRose sm:max-w-xs sm:text-sm sm:leading-6"
               onChange={(e) => setRating(e.target.value)}
+              value={rating}
             >
               <option value="1">1</option>
               <option value="2">2</option>

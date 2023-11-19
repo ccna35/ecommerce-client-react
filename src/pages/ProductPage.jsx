@@ -25,10 +25,6 @@ const ProductPage = () => {
     console.log(error);
   }
 
-  if (isSuccess) {
-    // setReviews([...data.reviews]);
-  }
-
   if (isLoading) {
     return <Spinner />;
   }

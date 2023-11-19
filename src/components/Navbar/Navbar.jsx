@@ -60,7 +60,7 @@ const Navbar = () => {
   const { cartItems } = useSelector((state) => state.cart);
 
   return (
-    <nav className="bg-white py-4 border-b relative z-10">
+    <nav className="bg-white py-4 border-b sticky top-0 z-10">
       <div className="container mx-auto flex justify-between items-center gap-4 flex-wrap">
         <div className="logo">
           <Link to="/">

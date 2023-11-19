@@ -40,7 +40,7 @@ const SearchForm = () => {
       ref={clickRef}
     >
       {isSearchResultsActive && (
-        <div className="absolute top-full w-full p-2 rounded-md border border-secColor bg-white">
+        <div className="absolute top-full w-full rounded-md border border-secColor bg-white flex flex-col">
           {isLoading ? (
             <p className="text-sm">Loading...</p>
           ) : isError && error.status === 404 ? (
@@ -54,6 +54,7 @@ const SearchForm = () => {
                   onClick={() => {
                     setIsSearchResultsActive(false);
                   }}
+                  className="p-2 transition hover:bg-slate-100"
                 >
                   <div className="flex gap-2 items-center cursor-pointer">
                     <div className="relative h-12 w-12 rounded-full overflow-hidden">
